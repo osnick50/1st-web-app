@@ -5,7 +5,7 @@
         </h4>
         <div><b>Location: {{ job['location'] }}</b></div>
         {% if 'salary' in job %}
-            <div><b>Salary: {{ job['salary'] }}</b></div>
+            <div><b>Salary: {{ job['salary'] }} {{ job['currency'] }}</b></div>
         {% endif %}
     </div>
     <div class="col-2">
