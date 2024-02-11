@@ -1,13 +1,16 @@
 import os
+import logging
 import sqlalchemy
 import pymysql
 from google.cloud.sql.connector import Connector, IPTypes
 
+logging.basicConfig(level=logging.INFO)
 
 ip_type = IPTypes.PRIVATE if os.environ.get("PRIVATE_IP") else IPTypes.PUBLIC
 connector = Connector(ip_type)
 
 def getconn() -> pymysql.connections.Connection:
+    logging.info("Initialize connection with DB")
     conn: pymysql.connections.Connection = connector.connect(
         os.getenv('INSTANCE_CONNECTION_NAME'),
         'pymysql',
@@ -21,6 +24,3 @@ engine = sqlalchemy.create_engine(
     "mysql+pymysql://",
     creator=getconn,
 )
-
-
-
