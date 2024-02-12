@@ -1,9 +1,7 @@
-import os
 from dotenv import load_dotenv
 import logging
 from flask import Flask, render_template, jsonify
 from database import load_jobs_db
-from sqlalchemy import text
 
 load_dotenv()
 

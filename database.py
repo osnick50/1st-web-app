@@ -11,18 +11,19 @@ connector = Connector(ip_type)
 
 def getconn() -> pymysql.connections.Connection:
     try:
-        logging.info("Initialize connection with DB")
+        logging.info("Initializing connection with DB")
         conn: pymysql.connections.Connection = connector.connect(
-            os.environ['INSTANCE_CONNECTION_NAME'],
+            os.environ.get('INSTANCE_CONNECTION_NAME'),
             'pymysql',
-            user=os.environ['DB_USER'],
-            password=os.environ['DB_PASS'],
-            db=os.environ['DB_NAME'],
+            user=os.environ.get('DB_USER'),
+            password=os.environ.get('DB_PASS'),
+            db=os.environ.get('DB_NAME'),
         )
         logging.info("Connection with SQL initialized")
         return conn
     except Exception as e:
         logging.error("Error initializing DB connection: ", e)
+        raise
 
 
 engine = sqlalchemy.create_engine(
