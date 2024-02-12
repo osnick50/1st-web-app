@@ -29,3 +29,15 @@ engine = sqlalchemy.create_engine(
     "mysql+pymysql://",
     creator=getconn,
 )
+
+def load_jobs_db():
+    try:
+        with engine.connect() as conn:
+            result = conn.execute(sqlalchemy.text("SELECT * FROM jobs"))
+            jobs_list = []
+            for dict_row in result.mappings():
+                jobs_list.append(dict(dict_row))
+            logging.info("Jobs loaded from DB")
+            return jobs_list
+    except Exception as e:
+        logging.info("Error occured while loading jobs from DB: ", e)
