@@ -19,6 +19,7 @@ def getconn() -> pymysql.connections.Connection:
             password=os.getenv('DB_PASS'),
             db=os.getenv('DB_NAME'),
         )
+        logging.info("Connection with SQL initialized")
         return conn
     except Exception as e:
         logging.error("Error initializing DB connection: ", e)
