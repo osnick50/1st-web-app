@@ -13,11 +13,11 @@ def getconn() -> pymysql.connections.Connection:
     try:
         logging.info("Initialize connection with DB")
         conn: pymysql.connections.Connection = connector.connect(
-            os.getenv('INSTANCE_CONNECTION_NAME'),
+            os.environ['INSTANCE_CONNECTION_NAME'],
             'pymysql',
-            user=os.getenv('DB_USER'),
-            password=os.getenv('DB_PASS'),
-            db=os.getenv('DB_NAME'),
+            user=os.environ['DB_USER'],
+            password=os.environ['DB_PASS'],
+            db=os.environ['DB_NAME'],
         )
         logging.info("Connection with SQL initialized")
         return conn
