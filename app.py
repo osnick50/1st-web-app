@@ -1,9 +1,6 @@
-from dotenv import load_dotenv
 import logging
 from flask import Flask, render_template, jsonify
 from database import load_jobs_db
-
-load_dotenv()
 
 # template_dir = os.path.join(os.path.dirname(os.path.abspath(os.path.dirname(__file__))),'frontend/templates')
 template_dir = 'frontend/templates'
