@@ -1,30 +1,48 @@
-import os
+import logging
 from flask import Flask, render_template, jsonify
-from database import engine
-from sqlalchemy import text
+from database import load_jobs_db, load_job_db
 
 # template_dir = os.path.join(os.path.dirname(os.path.abspath(os.path.dirname(__file__))),'frontend/templates')
 template_dir = 'frontend/templates'
 app = Flask(__name__, template_folder=template_dir)
 
-def load_jobs_db():
-    with engine.connect() as conn:
-        result = conn.execute(text("SELECT * FROM jobs"))
-        jobs_list = []
-        for dict_row in result.mappings():
-            jobs_list.append(dict(dict_row))
-        return jobs_list
+logging.basicConfig(level=logging.DEBUG)
+
 
 @app.route("/")
 def home_page():
-    jobs = load_jobs_db()
-    return render_template('home.html', jobs=jobs, company_name="Best Jobs")
+    try:
+        jobs = load_jobs_db()
+        logging.info("Jobs info loaded on page")
+        return render_template('home.html', jobs=jobs)
+    except Exception as e:
+        logging.error("Error while jobs loading: ", e)
+
+
+@app.route("/job/<id>")
+def show_job(id):
+     try:
+        job = load_job_db(id)
+        if not job:
+            return "Not found", 404
+        return render_template('jobpage.html', job=job)
+     except Exception as e:
+        logging.error("Error while jobs loading: ", e) 
+
 
 @app.route("/api/jobs")
 def list_jobs():
-    jobs = load_jobs_db()
-    return jsonify(jobs)    
-    
+    try:
+        jobs = load_jobs_db()
+        logging.info("Jobs info loaded")
+        return jsonify(jobs)
+    except Exception as e:
+        logging.error("Error while jobs loading: ", e) 
 
+
+@app.route("/api/health")
+def health_check():
+        return jsonify({'status': 'ok'})
+    
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', debug=True)
