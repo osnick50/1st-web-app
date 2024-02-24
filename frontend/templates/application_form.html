@@ -1,0 +1,54 @@
+<h4>Application form</h4><br>
+<form class="needs-validation" action="/job/{{job['id']}}/apply" method="post">
+    <div class="col-md-6">
+        <label class="form-label">Full Name</label>
+        <input class="form-control" type="text" name="full_name" placeholder="e.g. John Doe" required><br>
+    </div>
+
+    <div class="col-md-6">
+        <label class="form-label">Email</label>
+        <input class="form-control" type="email" name="email" placeholder="e.g. johndoe@gmail.com" required><br>
+    </div>
+
+    <div class="col-md-6">
+        <label class="form-label">LinkedIn URL</label>
+        <input class="form-control" type="text" name="linkedin_url" placeholder="e.g. https://www.linkedin.com/in/john-doe"><br>
+    </div>
+
+    <div class="col-md-6">
+        <label class="form-label">Education</label>
+        <textarea class="form-control" name="education" id="exampleFormControlTextarea1" rows="3" required></textarea><br>
+    </div>
+
+    <div class="col-md-6">
+        <label class="form-label">Work Experience</label>
+        <textarea class="form-control" name="work_experience" id="exampleFormControlTextarea1" rows="3" required></textarea><br>
+    </div>
+    <!-- <div class="col-md-6">
+        <label for="formFile" class="form-label">Upload CV</label>
+        <input class="form-control" type="file" id="formFile" accept=".pdf" required onchange="validateFile()">
+        <small id="fileError" class="text-danger"></small><br>
+    </div> -->
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+<script>
+    function validateFile() {
+        var fileInput = document.getElementById('formFile');
+        var fileError = document.getElementById('fileError');
+
+        // Check if a file is selected
+        if (fileInput.files.length > 0) {
+            // Get the file extension
+            var fileName = fileInput.files[0].name;
+            var fileExtension = fileName.split('.').pop().toLowerCase();
+
+            // Check if the file extension is PDF
+            if (fileExtension === 'pdf') {
+                fileError.textContent = ''; // Clear any previous error message
+            } else {
+                fileError.textContent = 'Wrong file format! Please upload PDF file.'; // Display error message
+                fileInput.value = ''; // Clear the file input to prevent submission
+            }
+        }
+    }
+</script>
