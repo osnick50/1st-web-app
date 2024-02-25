@@ -2,7 +2,8 @@
 <form class="needs-validation" action="/job/{{job['id']}}/apply" method="post">
     <div class="col-md-6">
         <label class="form-label">Full Name</label>
-        <input class="form-control" type="text" name="full_name" placeholder="e.g. John Doe" required><br>
+        <input class="form-control" type="text" name="full_name" placeholder="e.g. John Doe" required pattern=".{3,}">
+        <div class="invalid-feedback"></div><br>
     </div>
 
     <div class="col-md-6">
@@ -12,17 +13,17 @@
 
     <div class="col-md-6">
         <label class="form-label">LinkedIn URL</label>
-        <input class="form-control" type="text" name="linkedin_url" placeholder="e.g. https://www.linkedin.com/in/john-doe"><br>
+        <input class="form-control" type="url" name="linkedin_url" placeholder="e.g. https://www.linkedin.com/in/john-doe"><br>
     </div>
 
     <div class="col-md-6">
         <label class="form-label">Education</label>
-        <textarea class="form-control" name="education" id="exampleFormControlTextarea1" rows="3" required></textarea><br>
+        <textarea class="form-control" type="text" name="education" id="exampleFormControlTextarea1" rows="3" required></textarea><br>
     </div>
 
     <div class="col-md-6">
         <label class="form-label">Work Experience</label>
-        <textarea class="form-control" name="work_experience" id="exampleFormControlTextarea1" rows="3" required></textarea><br>
+        <textarea class="form-control" type="text" name="work_experience" id="exampleFormControlTextarea1" rows="3" required></textarea><br>
     </div>
     <!-- <div class="col-md-6">
         <label for="formFile" class="form-label">Upload CV</label>
@@ -32,23 +33,24 @@
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 <script>
-    function validateFile() {
-        var fileInput = document.getElementById('formFile');
-        var fileError = document.getElementById('fileError');
+const fullNameInput = document.querySelector('input[name="full_name"]');
+const name_feedbackElement = document.querySelector('.invalid-feedback');
 
-        // Check if a file is selected
-        if (fileInput.files.length > 0) {
-            // Get the file extension
-            var fileName = fileInput.files[0].name;
-            var fileExtension = fileName.split('.').pop().toLowerCase();
 
-            // Check if the file extension is PDF
-            if (fileExtension === 'pdf') {
-                fileError.textContent = ''; // Clear any previous error message
-            } else {
-                fileError.textContent = 'Wrong file format! Please upload PDF file.'; // Display error message
-                fileInput.value = ''; // Clear the file input to prevent submission
-            }
-        }
+fullNameInput.addEventListener('input', () => {
+    if (fullNameInput.value.length < 3) {
+        fullNameInput.classList.add('is-invalid');
+        name_feedbackElement.textContent = "Full name must be at least 3 characters long.";
+    } else {
+        fullNameInput.classList.remove('is-invalid');
+        name_feedbackElement.textContent = "";
     }
+});
+
+const emailInput = document.querySelector('input[name="email"]');
+
+
+emailInput.addEventListener('input', () => {
+    emailInput.value = emailInput.value.toLowerCase();
+});
 </script>

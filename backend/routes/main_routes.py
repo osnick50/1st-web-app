@@ -1,5 +1,5 @@
-import os
 import logging
+import re
 from flask import Blueprint, render_template, jsonify, request, flash, redirect, url_for
 from services.database import load_jobs_from_db, load_job_id, add_application_to_db
 
@@ -29,8 +29,34 @@ def show_job(id):
 @main_bp.route("/job/<id>/apply",  methods=["post"])
 def apply_to_job(id):
     try:
-        data = request.form
-        response = add_application_to_db(id, data)
+        # Access form data
+        full_name = request.form.get('full_name')
+        email = request.form.get('email').lower()
+        linkedin_url = request.form.get('linkedin_url')
+        education = request.form.get('education')
+        work_experience = request.form.get('work_experience')
+
+        errors = []
+        if not full_name or len(full_name) < 3:
+            errors.append("Full name is required and must be at least 3 characters long.")
+        if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+            errors.append("Invalid email format.")
+        # Add similar checks for other fields as needed
+
+        if errors:
+            # Display validation errors to the user
+            flash(''.join(errors), 'error')
+            return redirect(url_for('main.show_job', id=id))
+        
+        application = {
+            'full_name': full_name,
+            'email': email,
+            'linkedin_url': linkedin_url,
+            'education': education,
+            'work_experience': work_experience,
+        }
+        response = add_application_to_db(id, application)
+
         if response:
             flash('Application submitted successfully!', 'success')
             return redirect(url_for('main.show_job', id=id))  # Redirect to /job/1 instead of rendering jobpage.html
