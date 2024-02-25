@@ -67,18 +67,3 @@ def apply_to_job(id):
         logging.error(f"Apply error: {e}")
         flash('Error occurred during job application', 'error')
         return redirect(url_for('main.show_job', id=id))
-
-
-@main_bp.route("/api/jobs")
-def list_jobs():
-    try:
-        jobs = load_jobs_from_db()
-        logging.info("Jobs info loaded")
-        return jsonify(jobs)
-    except Exception as e:
-        logging.error("Error while jobs loading: ", e) 
-
-
-@main_bp.route("/api/health")
-def health_check():
-        return jsonify({'status': 'ok'})

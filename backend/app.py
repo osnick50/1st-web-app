@@ -3,6 +3,7 @@ import logging
 
 from flask import Flask
 from routes.main_routes import main_bp
+from routes.api_routes import api_bp
 
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -18,6 +19,7 @@ app.secret_key = os.getenv("FLASK_SECRET_KEY")  # Set a secret key for flashing 
 
 # Register routes
 app.register_blueprint(main_bp)
+app.register_blueprint(api_bp)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)
